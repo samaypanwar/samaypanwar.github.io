@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "personal_website"
+version = "0.1.0"
+description = "Proto experiment: 2026-02-04-personal-website"
+authors = ["Samay Panwar <samaybhuvi@gmail.com>"]
+packages = [{ include = "personal_website", from = "src" }]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.0"
+pre-commit = "^4.5.1"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
