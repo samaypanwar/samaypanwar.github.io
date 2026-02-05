@@ -13,7 +13,12 @@
   <main class="page">
     <header class="topbar">
       <span class="brand">samaypanwar</span>
-      <span class="location">Local · Pittsburgh, PA</span>
+      <div class="topbar-actions">
+        <span class="location">Local · Pittsburgh, PA</span>
+        <button class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle dark mode">
+          <span aria-hidden="true">Dark mode</span>
+        </button>
+      </div>
     </header>
 
     <section class="hero" aria-label="Intro">
@@ -49,6 +54,47 @@
       © 2026 Samay Panwar
     </footer>
   </main>
+  <script>
+    const root = document.documentElement;
+    const toggle = document.querySelector("[data-theme-toggle]");
+    const storageKey = "theme";
+
+    const updateToggleLabel = (theme) => {
+      const label = theme === "dark" ? "Light mode" : "Dark mode";
+      toggle.setAttribute("aria-label", `Switch to ${label.toLowerCase()}`);
+      toggle.querySelector("span").textContent = label;
+    };
+
+    const applyTheme = (theme) => {
+      root.classList.remove("theme-light", "theme-dark");
+      if (theme) {
+        root.classList.add(`theme-${theme}`);
+      }
+      updateToggleLabel(theme);
+    };
+
+    const storedTheme = localStorage.getItem(storageKey);
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    if (storedTheme === "light" || storedTheme === "dark") {
+      applyTheme(storedTheme);
+    } else {
+      updateToggleLabel(prefersDark ? "dark" : "light");
+    }
+
+    toggle.addEventListener("click", () => {
+      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      const currentTheme = root.classList.contains("theme-dark")
+        ? "dark"
+        : root.classList.contains("theme-light")
+          ? "light"
+          : prefersDark
+            ? "dark"
+            : "light";
+      const nextTheme = currentTheme === "dark" ? "light" : "dark";
+      localStorage.setItem(storageKey, nextTheme);
+      applyTheme(nextTheme);
+    });
+  </script>
 </body>
 
 </html>
